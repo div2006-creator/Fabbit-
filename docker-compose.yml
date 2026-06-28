@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  fabbit-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fabbit-web
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      # Map prisma folder containing database sqlite file so it persists on restart
+      - sqlite-data:/app/prisma
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=file:./dev.db
+      - RAZORPAY_KEY_ID=${RAZORPAY_KEY_ID}
+      - RAZORPAY_KEY_SECRET=${RAZORPAY_KEY_SECRET}
+      - RAZORPAY_WEBHOOK_SECRET=${RAZORPAY_WEBHOOK_SECRET}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - GOOGLE_REDIRECT_URI=${GOOGLE_REDIRECT_URI}
+      - JWT_SECRET=${JWT_SECRET}
+
+volumes:
+  sqlite-data:
